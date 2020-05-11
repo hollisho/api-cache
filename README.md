@@ -5,5 +5,5 @@
 Via Composer
 
 ``` bash
-$ composer require hollisho/lumen-sls
+$ composer require hollisho/api-cache
 ```
