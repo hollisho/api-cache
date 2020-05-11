@@ -1,0 +1,28 @@
+{
+  "name": "hollisho/api-cache",
+  "type": "library",
+  "description": "Api Cache For PHP",
+  "keywords": [
+    "cache",
+    "php-cache",
+    "api-cache"
+  ],
+  "homepage": "https://github.com/hollisho/api-cache",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Hollis Ho",
+      "email": "he_wenzhi@126.com",
+      "homepage": "https://www.1024plus.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "~5.7",
+  },
+  "autoload": {
+    "psr-4": {
+      "hollisho\\lumensls\\": "src"
+    }
+  }
+}
