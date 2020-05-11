@@ -18,11 +18,11 @@
     }
   ],
   "require": {
-    "php": "~5.7",
+    "php": "~5.7"
   },
   "autoload": {
     "psr-4": {
-      "hollisho\\lumensls\\": "src"
+      "hollisho\\apicache\\": "src"
     }
   }
 }
