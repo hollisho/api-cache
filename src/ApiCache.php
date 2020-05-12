@@ -29,12 +29,17 @@ class ApiCache
         $this->adapter = $adapter;
     }
 
-    public function getData($key, $callback, $params = [], $refresh = false) {
+    public function getData($func, $params = [], $callback = null, $refresh = false) {
+        $key = md5($func . json_encode($params));
         if (!$refresh && $result = $this->getCache($key)) {
             return json_decode($result, true);
         } else {
-            $result = call_user_func_array($callback, $params);
-            $ress = $this->setCache($key, json_encode($result));
+            if (method_exists($this, $func)) {
+                $result = $this->$func();
+            } else {
+                $result = call_user_func_array($callback, $params);
+            }
+            $this->setCache($key, json_encode($result));
             return $result;
         }
     }
