@@ -7,9 +7,12 @@ class RedisAdapter extends AbstractAdapter
 {
     private $redis;
 
-    public function __construct($redisClient)
+    private $timeout;
+
+    public function __construct($redisClient, $timeout)
     {
         $this->init($redisClient);
+        $this->timeout = $timeout;
     }
 
     public function get($key)
@@ -17,9 +20,19 @@ class RedisAdapter extends AbstractAdapter
         return $this->redis->get($key);
     }
 
-    public function put($key, $value, $defaultLifetime)
+    public function put($key, $value)
     {
-        $this->redis->set($key, $value, $defaultLifetime);
+        if ($this->redis instanceof \Redis) {
+            $result = $this->redis->set($key, $value, $this->timeout);
+        } else if ($this->redis instanceof \Predis\ClientInterface) {
+            $result = $this->redis->set($key, $value);
+            $this->redis->expire($key, $this->timeout);
+        }
+        return $result;
+    }
+    
+    public function isCache($key) {
+        return $this->redis->exists();
     }
 
     /**

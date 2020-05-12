@@ -8,4 +8,6 @@ abstract class AbstractAdapter
 
     abstract public function put($key, $value);
 
+    abstract public function isCache($key);
+
 }

@@ -2,36 +2,52 @@
 
 namespace hollisho\apicache;
 
-use hollisho\apicache\Adapter\RedisAdapter;
+use hollisho\apicache\Adapter\FilesystemAdapter;
 
 class ApiCache
 {
+    private $cache_time = 10;
+
     /**
      * @var AbstractAdapter  $adapter
      */
     private $adapter;
 
-    public function __construct($adapter)
+    /**
+     * @return AbstractAdapter
+     */
+    public function getAdapter()
+    {
+        return $this->adapter ? $this->adapter : new FilesystemAdapter('', null, $this->cache_time);
+    }
+
+    /**
+     * @param AbstractAdapter $adapter
+     */
+    public function setAdapter($adapter): void
     {
         $this->adapter = $adapter;
     }
 
-    public function getData($key, $callback, $params = []) {
-        if ($this->adapter) {
-            $result = $this->adapter->get($key);
-            return json_decode($result);
+    public function getData($key, $callback, $params = [], $refresh = false) {
+        if (!$refresh && $result = $this->getCache($key)) {
+            return json_decode($result, true);
         } else {
             $result = call_user_func_array($callback, $params);
-            $this->adapter->put($key, json_encode($result));
+            $ress = $this->setCache($key, json_encode($result));
+            return $result;
         }
     }
 
     public function getCache($key) {
-        $result = $this->adapter->get($key);
-        return json_decode($result);
+        return $this->getAdapter()->get($key);
     }
 
     public function isCached($key) {
-        return $this->getCache();
+        return $this->getAdapter()->exist();
+    }
+
+    public function setCache($key, $value) {
+        return $this->getAdapter()->put($key, $value);
     }
 }
