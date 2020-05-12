@@ -24,7 +24,7 @@ class ApiCache
     /**
      * @param AbstractAdapter $adapter
      */
-    public function setAdapter($adapter): void
+    public function setAdapter($adapter)
     {
         $this->adapter = $adapter;
     }

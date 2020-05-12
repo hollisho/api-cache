@@ -48,7 +48,7 @@ class RedisAdapter extends AbstractAdapter
             $options = clone $redisClient->getOptions();
             \Closure::bind(function () {
                 $this->options['exceptions'] = false;
-            }, $options, $options)();
+            }, $options, $options);
             $redisClient = new $redisClient($redisClient->getConnection(), $options);
         }
 
