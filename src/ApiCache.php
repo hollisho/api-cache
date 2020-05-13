@@ -43,7 +43,7 @@ class ApiCache
                     $result = call_user_func($callback);
                 }
             }
-            $this->setCache($key, json_encode($result));
+            $result && $this->setCache($key, json_encode($result));
             return $result;
         }
     }
