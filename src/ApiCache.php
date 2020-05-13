@@ -29,7 +29,7 @@ class ApiCache
         $this->adapter = $adapter;
     }
 
-    public function getData($func, $params = [], $callback = null, $refresh = false) {
+    public function getApi($func, $params = [], $callback = null, $refresh = false) {
         $key = md5($func . json_encode($params));
         if (!$refresh && $result = $this->getCache($key)) {
             return json_decode($result, true);
@@ -37,7 +37,11 @@ class ApiCache
             if (method_exists($this, $func)) {
                 $result = $this->$func();
             } else {
-                $result = call_user_func_array($callback, $params);
+                if ($params) {
+                    $result = call_user_func_array($callback, $params);
+                } else {
+                    $result = call_user_func($callback);
+                }
             }
             $this->setCache($key, json_encode($result));
             return $result;
