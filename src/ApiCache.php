@@ -35,7 +35,7 @@ class ApiCache
             return json_decode($result, true);
         } else {
             if (method_exists($this, $func)) {
-                $result = $this->$func();
+                $result = $this->$func(...array_values($params));
             } else {
                 if ($params) {
                     $result = call_user_func_array($callback, $params);
